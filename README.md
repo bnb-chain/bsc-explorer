@@ -2,7 +2,7 @@
 This is a project fork from [Blockscout](https://github.com/poanetwork/blockscout). Use for [Binance Smart Chain Rialto Network](https://explorer.binance.org/smart-testnet).
 
 ## Disclaimer
-**The software and related documentation are under active development, all subjected to potential future change without notification and not ready for production use. The code and security audit have not been fully completed and not ready for any bug bounty.**
+**The software and related documentation are under active development, all subject to potential future change without notification and not ready for production use. The code and security audit have not been fully completed and not ready for any bug bounty.**
 
 ## About BlockScout
 
