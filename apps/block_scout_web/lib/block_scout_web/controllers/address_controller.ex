@@ -30,7 +30,11 @@ defmodule BlockScoutWeb.AddressController do
       end
 
     exchange_rate = Market.get_exchange_rate(Explorer.coin()) || Token.null()
-    total_supply = Chain.total_supply()
+    # total_supply = Chain.total_supply()
+
+    token_hub = Chain.fetch_token_hub_address()
+    token_hub_balance = Decimal.div(token_hub.fetched_coin_balance.value, Decimal.new("1000000000000000000"))
+    total_supply = Decimal.sub(Decimal.new("200000000"), token_hub_balance)
 
     items =
       addresses_page

@@ -6,8 +6,8 @@ defmodule BlockScoutWeb.Endpoint do
     plug(Phoenix.Ecto.SQL.Sandbox, repo: Explorer.Repo)
   end
 
-  socket("/socket", BlockScoutWeb.UserSocket, websocket: [timeout: 45_000])
-  socket("/wobserver", Wobserver.Web.PhoenixSocket)
+  socket(Application.get_env(:block_scout_web, :socket_root, "") <> "/socket", BlockScoutWeb.UserSocket, websocket: [timeout: 45_000])
+  socket(Application.get_env(:block_scout_web, :socket_root, "") <> "/wobserver", Wobserver.Web.PhoenixSocket)
 
   # Serve at "/" the static files from "priv/static" directory.
   #
@@ -15,7 +15,7 @@ defmodule BlockScoutWeb.Endpoint do
   # when deploying your static files in production.
   plug(
     Plug.Static,
-    at: "/",
+    at: Application.get_env(:block_scout_web, :static_network_path, "/"),
     from: :block_scout_web,
     gzip: true,
     only: ~w(

@@ -28,6 +28,7 @@ defmodule BlockScoutWeb.AddressContractVerificationController do
           "external_libraries" => external_libraries
         }
       ) do
+
     Que.add(PublisherWorker, {smart_contract["address_hash"], smart_contract, external_libraries, conn})
 
     send_resp(conn, 204, "")

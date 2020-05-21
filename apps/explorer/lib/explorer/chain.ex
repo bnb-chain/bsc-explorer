@@ -1636,6 +1636,7 @@ defmodule Explorer.Chain do
     base_query =
       from(a in Address,
         where: a.fetched_coin_balance > ^0,
+        where: a.hash != ^"0x0000000000000000000000000000000000001004",
         order_by: [desc: a.fetched_coin_balance, asc: a.hash],
         preload: [:names],
         select: {a, fragment("coalesce(1 + ?, 0)", a.nonce)}
@@ -1645,6 +1646,16 @@ defmodule Explorer.Chain do
     |> page_addresses(paging_options)
     |> limit(^paging_options.page_size)
     |> Repo.all()
+  end
+
+  def fetch_token_hub_address() do
+    base_query =
+      from(a in Address,
+        where: a.hash == ^"0x0000000000000000000000000000000000001004"
+      )
+
+    base_query
+     |> Repo.one()
   end
 
   @doc """

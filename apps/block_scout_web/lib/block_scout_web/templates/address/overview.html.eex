@@ -106,7 +106,11 @@
                   "data-test": "transaction_hash_link"
                 ) %>
               <% else %>
-                <p class="alert alert-danger" role="alert"><%= gettext("Error: Could not determine contract creator.") %></p>
+                <%= if system_address?(@address.hash) do %>
+                  <%= gettext "Created by system" %>
+                <% else %>
+                  <p class="alert alert-danger" role="alert"><%= gettext("Error: Could not determine contract creator.") %></p>
+                <% end %>
               <% end %>
             </span>
           <% end %>

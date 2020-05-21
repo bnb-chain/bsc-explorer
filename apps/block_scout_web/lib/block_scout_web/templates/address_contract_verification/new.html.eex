@@ -117,7 +117,7 @@
               <%= textarea f, :contract_source_code, class: "form-control border-rounded monospace", rows: 3, "aria-describedby": "contract-source-code-help-block" %>
               <%= error_tag f, :contract_source_code, id: "contract-source-code-help-block", class: "text-danger form-error", "data-test": "contract-source-code-error" %>
             </div>
-            <div class="smart-contract-form-group-tooltip">We recommend using flattened code. This is necessary if your code utilizes a library or inherits dependencies. Use the <a href="https://github.com/poanetwork/solidity-flattener" target="_blank">POA solidity flattener or the <a href="https://www.npmjs.com/package/truffle-flattener" target="_blank">truffle flattener</a>.</div>
+            <div class="smart-contract-form-group-tooltip">We recommend using flattened code. This is necessary if your code utilizes a library or inherits dependencies. Use the <a href="https://www.npmjs.com/package/truffle-flattener" target="_blank">truffle flattener</a>.</div>
           </div>
         </div>
 

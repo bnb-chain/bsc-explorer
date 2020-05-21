@@ -61,13 +61,21 @@ defmodule EthereumJSONRPC.Contract do
           {:error, "No result"}
 
         response ->
-          {^index, result} = Encoder.decode_result(response, selectors)
-          result
+          try_decode_result(index, response, selectors)
+          # {^index, result} = Encoder.decode_result(response, selectors)
+          # result
       end
     end)
   rescue
     error ->
       Enum.map(requests, fn _ -> format_error(error) end)
+  end
+
+  defp try_decode_result(index, response, selectors) do
+    case Encoder.decode_result(response, selectors) do
+      {^index, result} -> result
+      _ -> {:error, "No result"}
+    end
   end
 
   defp eth_call_request(data, contract_address, id, block_number) do

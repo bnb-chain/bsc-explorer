@@ -39,20 +39,32 @@ defmodule BlockScoutWeb.LayoutView do
   alias BlockScoutWeb.SocialMedia
 
   def logo do
-    Keyword.get(application_config(), :logo) || "/images/blockscout_logo.svg"
+    Keyword.get(application_config(), :logo) ||
+      "/images/binance_smart_chain_logo.svg"
+        |> static_image_path
   end
 
   def logo_footer do
     Keyword.get(application_config(), :logo_footer) || Keyword.get(application_config(), :logo) ||
-      "/images/blockscout_logo.svg"
+      "/images/binance_smart_chain_logo.svg"
+        |> static_image_path
+  end
+
+  defp static_image_path(path) do
+    p = Application.get_env(:block_scout_web, :static_network_path)
+    if p == "/" do
+      path
+    else
+      p <> path
+    end
   end
 
   def subnetwork_title do
-    Keyword.get(application_config(), :subnetwork) || "POA Sokol"
+    Keyword.get(application_config(), :subnetwork) || ""
   end
 
   def network_title do
-    Keyword.get(application_config(), :network) || "POA"
+    Keyword.get(application_config(), :network) || "Binance Smart Chain"
   end
 
   defp application_config do

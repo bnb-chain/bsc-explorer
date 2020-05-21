@@ -6,7 +6,17 @@ EXPOSE 4000
 
 ENV PORT=4000 \
     MIX_ENV="prod" \
-    SECRET_KEY_BASE="RMgI4C1HSkxsEjdhtGMfwAHfyT6CKWXOgzCboJflfSm4jeAlic52io05KB6mqzc5"
+    ECTO_USE_SSL="false" \
+    ETHEREUM_JSONRPC_VARIANT="geth" \
+    COIN="BNB" \
+    EMISSION_FORMAT="GETH" \
+    NETWORK="Binance Smart Chain" \
+    WEB_NETWORK_PATH="/smart-testnet" \
+    STATIC_NETWORK_PATH="/smart-testnet" \
+    API_PATH="/smart-testnet" \
+    SOCKET_ROOT="/smart-testnet" \
+    BLOCKSCOUT_HOST="explorer.binance.org"
+
 
 # Cache elixir deps
 ADD mix.exs mix.lock ./
@@ -42,3 +52,4 @@ RUN mix phx.digest
 # USER default
 
 # CMD ["mix", "phx.server"]
+CMD ["sh","-c","mix do ecto.migrate && mix phx.server"]

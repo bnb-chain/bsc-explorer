@@ -32,7 +32,11 @@ config :block_scout_web,
   },
   other_networks: System.get_env("SUPPORTED_CHAINS"),
   webapp_url: System.get_env("WEBAPP_URL"),
-  api_url: System.get_env("API_URL")
+  api_url: System.get_env("API_URL"),
+  web_network_path: System.get_env("WEB_NETWORK_PATH") || "/",
+  static_network_path: System.get_env("STATIC_NETWORK_PATH") || "/",
+  api_path: System.get_env("API_PATH") || "/",
+  socket_root: System.get_env("SOCKET_ROOT") || "/"
 
 config :block_scout_web, BlockScoutWeb.Counters.BlocksIndexedCounter, enabled: true
 
@@ -44,6 +48,12 @@ config :block_scout_web, BlockScoutWeb.Endpoint,
     host: System.get_env("BLOCKSCOUT_HOST") || "localhost",
     path: System.get_env("NETWORK_PATH") || "/",
     api_path: System.get_env("API_PATH") || "/"
+  ],
+  static_url: [
+    scheme: System.get_env("STATIC_BLOCKSCOUT_PROTOCOL") || "https",
+    port: System.get_env("STATIC_PORT"),
+    host: System.get_env("STATIC_BLOCKSCOUT_HOST") || "localhost",
+    path: System.get_env("STATIC_NETWORK_PATH") || "/"
   ],
   render_errors: [view: BlockScoutWeb.ErrorView, accepts: ~w(html json)],
   pubsub: [name: BlockScoutWeb.PubSub]
@@ -95,7 +105,8 @@ config :block_scout_web, BlockScoutWeb.ApiRouter,
   writing_enabled: System.get_env("DISABLE_WRITE_API") != "true",
   reading_enabled: System.get_env("DISABLE_READ_API") != "true"
 
-config :block_scout_web, BlockScoutWeb.WebRouter, enabled: System.get_env("DISABLE_WEBAPP") != "true"
+config :block_scout_web, BlockScoutWeb.WebRouter,
+  enabled: System.get_env("DISABLE_WEBAPP") != "true"
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

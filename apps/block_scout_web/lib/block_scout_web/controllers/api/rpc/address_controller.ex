@@ -6,19 +6,19 @@ defmodule BlockScoutWeb.API.RPC.AddressController do
   alias Explorer.Chain.{Address, Wei}
   alias Indexer.Fetcher.CoinBalanceOnDemand
 
-  def listaccounts(conn, params) do
-    options =
-      params
-      |> optional_params()
-      |> Map.put_new(:page_number, 0)
-      |> Map.put_new(:page_size, 10)
+  # def listaccounts(conn, params) do
+  #   options =
+  #     params
+  #     |> optional_params()
+  #     |> Map.put_new(:page_number, 0)
+  #     |> Map.put_new(:page_size, 10)
 
-    accounts = list_accounts(options)
+  #   accounts = list_accounts(options)
 
-    conn
-    |> put_status(200)
-    |> render(:listaccounts, %{accounts: accounts})
-  end
+  #   conn
+  #   |> put_status(200)
+  #   |> render(:listaccounts, %{accounts: accounts})
+  # end
 
   def eth_get_balance(conn, params) do
     with {:address_param, {:ok, address_param}} <- fetch_address(params),
@@ -67,9 +67,9 @@ defmodule BlockScoutWeb.API.RPC.AddressController do
     end
   end
 
-  def balancemulti(conn, params) do
-    balance(conn, params, :balancemulti)
-  end
+  # def balancemulti(conn, params) do
+  #   balance(conn, params, :balancemulti)
+  # end
 
   def txlist(conn, params) do
     options = optional_params(params)
@@ -94,69 +94,69 @@ defmodule BlockScoutWeb.API.RPC.AddressController do
     end
   end
 
-  def txlistinternal(conn, params) do
-    case {Map.fetch(params, "txhash"), Map.fetch(params, "address")} do
-      {:error, :error} ->
-        render(conn, :error, error: "Query parameter txhash or address is required")
+  # def txlistinternal(conn, params) do
+  #   case {Map.fetch(params, "txhash"), Map.fetch(params, "address")} do
+  #     {:error, :error} ->
+  #       render(conn, :error, error: "Query parameter txhash or address is required")
 
-      {{:ok, txhash_param}, :error} ->
-        txlistinternal(conn, txhash_param, :txhash)
+  #     {{:ok, txhash_param}, :error} ->
+  #       txlistinternal(conn, txhash_param, :txhash)
 
-      {:error, {:ok, address_param}} ->
-        txlistinternal(conn, params, address_param, :address)
-    end
-  end
+  #     {:error, {:ok, address_param}} ->
+  #       txlistinternal(conn, params, address_param, :address)
+  #   end
+  # end
 
-  def txlistinternal(conn, txhash_param, :txhash) do
-    with {:format, {:ok, transaction_hash}} <- to_transaction_hash(txhash_param),
-         {:ok, internal_transactions} <- list_internal_transactions(transaction_hash) do
-      render(conn, :txlistinternal, %{internal_transactions: internal_transactions})
-    else
-      {:format, :error} ->
-        render(conn, :error, error: "Invalid txhash format")
+  # def txlistinternal(conn, txhash_param, :txhash) do
+  #   with {:format, {:ok, transaction_hash}} <- to_transaction_hash(txhash_param),
+  #        {:ok, internal_transactions} <- list_internal_transactions(transaction_hash) do
+  #     render(conn, :txlistinternal, %{internal_transactions: internal_transactions})
+  #   else
+  #     {:format, :error} ->
+  #       render(conn, :error, error: "Invalid txhash format")
 
-      {:error, :not_found} ->
-        render(conn, :error, error: "No internal transactions found", data: [])
-    end
-  end
+  #     {:error, :not_found} ->
+  #       render(conn, :error, error: "No internal transactions found", data: [])
+  #   end
+  # end
 
-  def txlistinternal(conn, params, address_param, :address) do
-    options = optional_params(params)
+  # def txlistinternal(conn, params, address_param, :address) do
+  #   options = optional_params(params)
 
-    with {:format, {:ok, address_hash}} <- to_address_hash(address_param),
-         {:ok, internal_transactions} <- list_internal_transactions(address_hash, options) do
-      render(conn, :txlistinternal, %{internal_transactions: internal_transactions})
-    else
-      {:format, :error} ->
-        render(conn, :error, error: "Invalid address format")
+  #   with {:format, {:ok, address_hash}} <- to_address_hash(address_param),
+  #        {:ok, internal_transactions} <- list_internal_transactions(address_hash, options) do
+  #     render(conn, :txlistinternal, %{internal_transactions: internal_transactions})
+  #   else
+  #     {:format, :error} ->
+  #       render(conn, :error, error: "Invalid address format")
 
-      {:error, :not_found} ->
-        render(conn, :error, error: "No internal transactions found", data: [])
-    end
-  end
+  #     {:error, :not_found} ->
+  #       render(conn, :error, error: "No internal transactions found", data: [])
+  #   end
+  # end
 
-  def tokentx(conn, params) do
-    options = optional_params(params)
+  # def tokentx(conn, params) do
+  #   options = optional_params(params)
 
-    with {:address_param, {:ok, address_param}} <- fetch_address(params),
-         {:format, {:ok, address_hash}} <- to_address_hash(address_param),
-         {:contract_address, {:ok, contract_address_hash}} <- to_contract_address_hash(params["contractaddress"]),
-         {:ok, token_transfers} <- list_token_transfers(address_hash, contract_address_hash, options) do
-      render(conn, :tokentx, %{token_transfers: token_transfers})
-    else
-      {:address_param, :error} ->
-        render(conn, :error, error: "Query parameter address is required")
+  #   with {:address_param, {:ok, address_param}} <- fetch_address(params),
+  #        {:format, {:ok, address_hash}} <- to_address_hash(address_param),
+  #        {:contract_address, {:ok, contract_address_hash}} <- to_contract_address_hash(params["contractaddress"]),
+  #        {:ok, token_transfers} <- list_token_transfers(address_hash, contract_address_hash, options) do
+  #     render(conn, :tokentx, %{token_transfers: token_transfers})
+  #   else
+  #     {:address_param, :error} ->
+  #       render(conn, :error, error: "Query parameter address is required")
 
-      {:format, :error} ->
-        render(conn, :error, error: "Invalid address format")
+  #     {:format, :error} ->
+  #       render(conn, :error, error: "Invalid address format")
 
-      {:contract_address, :error} ->
-        render(conn, :error, error: "Invalid contractaddress format")
+  #     {:contract_address, :error} ->
+  #       render(conn, :error, error: "Invalid contractaddress format")
 
-      {:error, :not_found} ->
-        render(conn, :error, error: "No token transfers found", data: [])
-    end
-  end
+  #     {:error, :not_found} ->
+  #       render(conn, :error, error: "No token transfers found", data: [])
+  #   end
+  # end
 
   @tokenbalance_required_params ~w(contractaddress address)
 
@@ -192,24 +192,24 @@ defmodule BlockScoutWeb.API.RPC.AddressController do
     end
   end
 
-  def getminedblocks(conn, params) do
-    options = Helpers.put_pagination_options(%{}, params)
+  # def getminedblocks(conn, params) do
+  #   options = Helpers.put_pagination_options(%{}, params)
 
-    with {:address_param, {:ok, address_param}} <- fetch_address(params),
-         {:format, {:ok, address_hash}} <- to_address_hash(address_param),
-         {:ok, blocks} <- list_blocks(address_hash, options) do
-      render(conn, :getminedblocks, %{blocks: blocks})
-    else
-      {:address_param, :error} ->
-        render(conn, :error, error: "Query parameter 'address' is required")
+  #   with {:address_param, {:ok, address_param}} <- fetch_address(params),
+  #        {:format, {:ok, address_hash}} <- to_address_hash(address_param),
+  #        {:ok, blocks} <- list_blocks(address_hash, options) do
+  #     render(conn, :getminedblocks, %{blocks: blocks})
+  #   else
+  #     {:address_param, :error} ->
+  #       render(conn, :error, error: "Query parameter 'address' is required")
 
-      {:format, :error} ->
-        render(conn, :error, error: "Invalid address format")
+  #     {:format, :error} ->
+  #       render(conn, :error, error: "Invalid address format")
 
-      {:error, :not_found} ->
-        render(conn, :error, error: "No blocks found", data: [])
-    end
-  end
+  #     {:error, :not_found} ->
+  #       render(conn, :error, error: "No blocks found", data: [])
+  #   end
+  # end
 
   @doc """
   Sanitizes optional params.
@@ -319,14 +319,14 @@ defmodule BlockScoutWeb.API.RPC.AddressController do
     Enum.any?(address_hashes, &(&1 == :error))
   end
 
-  defp list_accounts(%{page_number: page_number, page_size: page_size}) do
-    offset = (max(page_number, 1) - 1) * page_size
+  # defp list_accounts(%{page_number: page_number, page_size: page_size}) do
+  #   offset = (max(page_number, 1) - 1) * page_size
 
-    # limit is just page_size
-    offset
-    |> Chain.list_ordered_addresses(page_size)
-    |> trigger_balances_and_add_status()
-  end
+  #   # limit is just page_size
+  #   offset
+  #   |> Chain.list_ordered_addresses(page_size)
+  #   |> trigger_balances_and_add_status()
+  # end
 
   defp hashes_to_addresses(address_hashes) do
     address_hashes
@@ -366,11 +366,11 @@ defmodule BlockScoutWeb.API.RPC.AddressController do
     end)
   end
 
-  defp to_contract_address_hash(nil), do: {:contract_address, {:ok, nil}}
+  # defp to_contract_address_hash(nil), do: {:contract_address, {:ok, nil}}
 
-  defp to_contract_address_hash(address_hash_string) do
-    {:contract_address, Chain.string_to_address_hash(address_hash_string)}
-  end
+  # defp to_contract_address_hash(address_hash_string) do
+  #   {:contract_address, Chain.string_to_address_hash(address_hash_string)}
+  # end
 
   defp to_address_hash(address_hash_string) do
     {:format, Chain.string_to_address_hash(address_hash_string)}
@@ -383,9 +383,9 @@ defmodule BlockScoutWeb.API.RPC.AddressController do
     end
   end
 
-  defp to_transaction_hash(transaction_hash_string) do
-    {:format, Chain.string_to_transaction_hash(transaction_hash_string)}
-  end
+  # defp to_transaction_hash(transaction_hash_string) do
+  #   {:format, Chain.string_to_transaction_hash(transaction_hash_string)}
+  # end
 
   defp put_order_by_direction(options, params) do
     case params do
@@ -457,33 +457,33 @@ defmodule BlockScoutWeb.API.RPC.AddressController do
     end
   end
 
-  defp list_internal_transactions(transaction_hash) do
-    case Etherscan.list_internal_transactions(transaction_hash) do
-      [] -> {:error, :not_found}
-      internal_transactions -> {:ok, internal_transactions}
-    end
-  end
+  # defp list_internal_transactions(transaction_hash) do
+  #   case Etherscan.list_internal_transactions(transaction_hash) do
+  #     [] -> {:error, :not_found}
+  #     internal_transactions -> {:ok, internal_transactions}
+  #   end
+  # end
 
-  defp list_internal_transactions(transaction_hash, options) do
-    case Etherscan.list_internal_transactions(transaction_hash, options) do
-      [] -> {:error, :not_found}
-      internal_transactions -> {:ok, internal_transactions}
-    end
-  end
+  # defp list_internal_transactions(transaction_hash, options) do
+  #   case Etherscan.list_internal_transactions(transaction_hash, options) do
+  #     [] -> {:error, :not_found}
+  #     internal_transactions -> {:ok, internal_transactions}
+  #   end
+  # end
 
-  defp list_token_transfers(address_hash, contract_address_hash, options) do
-    case Etherscan.list_token_transfers(address_hash, contract_address_hash, options) do
-      [] -> {:error, :not_found}
-      token_transfers -> {:ok, token_transfers}
-    end
-  end
+  # defp list_token_transfers(address_hash, contract_address_hash, options) do
+  #   case Etherscan.list_token_transfers(address_hash, contract_address_hash, options) do
+  #     [] -> {:error, :not_found}
+  #     token_transfers -> {:ok, token_transfers}
+  #   end
+  # end
 
-  defp list_blocks(address_hash, options) do
-    case Etherscan.list_blocks(address_hash, options) do
-      [] -> {:error, :not_found}
-      blocks -> {:ok, blocks}
-    end
-  end
+  # defp list_blocks(address_hash, options) do
+  #   case Etherscan.list_blocks(address_hash, options) do
+  #     [] -> {:error, :not_found}
+  #     blocks -> {:ok, blocks}
+  #   end
+  # end
 
   defp get_token_balance(%{contract_address_hash: contract_address_hash, address_hash: address_hash}) do
     case Etherscan.get_token_balance(contract_address_hash, address_hash) do
