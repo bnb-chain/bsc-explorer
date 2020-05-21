@@ -8,7 +8,7 @@
         ) do %>
         <%= token_name(@token) %>
       <% end %>
-      <span><%= @token.type %> - <%= @token.contract_address_hash %></span>
+      <span><%= convertTokenType(@token.type) %> - <%= @token.contract_address_hash %></span>
       <%= if @token.usd_value do %>
         <span data-selector="token-price" data-usd-value="<%= @token.usd_value %>"></span>
       <% end %>

@@ -262,6 +262,35 @@ defmodule BlockScoutWeb.AddressView do
     nil
   end
 
+  def system_address?(%Hash{} = hash) do
+    string_hash = to_string(hash)
+    system_address?(string_hash)
+  end
+
+  def system_address?("0x0000000000000000000000000000000000001000"), do: true
+
+  def system_address?("0x0000000000000000000000000000000000001001"), do: true
+
+  def system_address?("0x0000000000000000000000000000000000001002"), do: true
+
+  def system_address?("0x0000000000000000000000000000000000001003"), do: true
+
+  def system_address?("0x0000000000000000000000000000000000001004"), do: true
+
+  def system_address?("0x0000000000000000000000000000000000001005"), do: true
+
+  def system_address?("0x0000000000000000000000000000000000001006"), do: true
+
+  def system_address?("0x0000000000000000000000000000000000001007"), do: true
+
+  def system_address?("0x0000000000000000000000000000000000001008"), do: true
+
+  def system_address?("0x0000000000000000000000000000000000001009"), do: true
+
+  def system_address?("0x0000000000000000000000000000000000001010"), do: true
+
+  def system_address?(_address), do: false
+
   def address_link_to_other_explorer(link, address, full) do
     if full do
       link <> to_string(address)

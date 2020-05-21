@@ -5,6 +5,7 @@ defmodule RPCTranslatorForwarder do
   """
   alias BlockScoutWeb.API.RPC.RPCTranslator
   defdelegate init(opts), to: RPCTranslator
+  @spec call(Plug.Conn.t(), any) :: Plug.Conn.t()
   defdelegate call(conn, opts), to: RPCTranslator
 end
 
@@ -56,7 +57,7 @@ defmodule BlockScoutWeb.ApiRouter do
         "stats" => {RPC.StatsController, []},
         "contract" => {RPC.ContractController, [:verify]},
         "transaction" => {RPC.TransactionController, []}
-      })
+        })
     end
 
     # For backward compatibility. Should be removed

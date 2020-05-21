@@ -1,7 +1,7 @@
 <div data-token-type="<%= @type %>">
   <h6 class="dropdown-header">
-    <%= @type %> (<span data-number-of-tokens-by-type="<%= @type %>"><%= Enum.count(@token_balances)%></span>)
-  </h6>
+    <%= "BEP2E" %> (<span data-number-of-tokens-by-type="<%= "BEP2E" %>"><%= Enum.count(@token_balances)%></span>)
+  </h6>`
 
   <%= for token_balance <- sort_by_name(@token_balances) do %>
     <div

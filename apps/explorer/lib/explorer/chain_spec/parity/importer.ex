@@ -11,38 +11,53 @@ defmodule Explorer.ChainSpec.Parity.Importer do
   alias Explorer.Chain.Wei
   alias Explorer.ChainSpec.GenesisData
   alias Explorer.ChainSpec.POA.Importer, as: PoaEmissionImporter
+  alias Explorer.ChainSpec.Geth.Importer, as: GethImporter
 
   import Ecto.Query
 
   @max_block_number :infinity
 
   def import_emission_rewards(chain_spec) do
-    if Application.get_env(:explorer, GenesisData)[:emission_format] == "POA" do
-      PoaEmissionImporter.import_emission_rewards()
-    else
-      import_rewards_from_chain_spec(chain_spec)
+    cond do
+      "GETH" ->
+        GethImporter.import_emission_rewards()
+
+      "POA" ->
+        PoaEmissionImporter.import_emission_rewards()
+
+      true ->
+        import_rewards_from_chain_spec(chain_spec)
     end
+    # if Application.get_env(:explorer, GenesisData)[:emission_format] == "POA" do
+    #   PoaEmissionImporter.import_emission_rewards()
+    # else
+    #   import_rewards_from_chain_spec(chain_spec)
+    # end
   end
 
   def import_genesis_accounts(chain_spec) do
-    balance_params =
-      chain_spec
-      |> genesis_accounts()
-      |> Stream.map(fn balance_map ->
-        Map.put(balance_map, :block_number, 0)
-      end)
-      |> Enum.to_list()
+    if Application.get_env(:explorer, GenesisData)[:emission_format] == "GETH" do
+      GethImporter.import_genesis_accounts(chain_spec)
+    else
+      balance_params =
+        chain_spec
+        |> genesis_accounts()
+        |> Stream.map(fn balance_map ->
+          Map.put(balance_map, :block_number, 0)
+        end)
+        |> Enum.to_list()
 
-    address_params =
-      balance_params
-      |> Stream.map(fn %{address_hash: hash} = map ->
-        Map.put(map, :hash, hash)
-      end)
-      |> Enum.to_list()
+      address_params =
+        balance_params
+        |> Stream.map(fn %{address_hash: hash} = map ->
+          Map.put(map, :hash, hash)
+        end)
+        |> Enum.to_list()
 
-    params = %{address_coin_balances: %{params: balance_params}, addresses: %{params: address_params}}
+      params = %{address_coin_balances: %{params: balance_params}, addresses: %{params: address_params}}
 
-    Chain.import(params)
+      Chain.import(params)
+    end
   end
 
   defp import_rewards_from_chain_spec(chain_spec) do

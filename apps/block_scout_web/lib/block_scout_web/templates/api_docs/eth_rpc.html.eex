@@ -10,7 +10,7 @@
         <%= gettext "This is useful to allow sending requests to blockscout without having to change anything about the request." %>
         <%= gettext "However, in general, the" %> <%= link(
                   gettext("custom RPC"),
-                  to: api_docs_path(@conn, :index)
+                  to: "/"
                 ) %> <%= gettext " is recommended." %>
         <%= gettext "Anything not in this list is not supported. Click on the method to be taken to the documentation for that method, and check the notes section for any potential differences." %>
       </p>

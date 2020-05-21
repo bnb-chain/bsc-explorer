@@ -42,7 +42,7 @@ config :explorer, Explorer.Chain.Events.Listener,
 config :explorer, Explorer.ChainSpec.GenesisData,
   enabled: true,
   chain_spec_path: System.get_env("CHAIN_SPEC_PATH"),
-  emission_format: System.get_env("EMISSION_FORMAT", "DEFAULT"),
+  emission_format: System.get_env("EMISSION_FORMAT", "GETH"),
   rewards_contract_address: System.get_env("REWARDS_CONTRACT", "0xeca443e8e1ab29971a45a9c57a6a9875701698a5")
 
 config :explorer, Explorer.Chain.Cache.BlockNumber,
@@ -85,7 +85,7 @@ config :explorer, Explorer.Counters.AddressesWithBalanceCounter,
 config :explorer, Explorer.Counters.AddressesCounter,
   enabled: true,
   enable_consolidation: true,
-  update_interval_in_seconds: balances_update_interval || 30 * 60
+  update_interval_in_seconds: balances_update_interval || 5 * 60
 
 config :explorer, Explorer.ExchangeRates, enabled: true, store: :ets
 

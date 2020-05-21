@@ -14,12 +14,12 @@ defmodule BlockScoutWeb.WebRouter do
   end
 
   # Disallows Iframes (write routes)
-  scope "/", BlockScoutWeb do
+  scope Application.get_env(:block_scout_web, :web_network_path, "/"), BlockScoutWeb do
     pipe_through(:browser)
   end
 
   # Allows Iframes (read-only routes)
-  scope "/", BlockScoutWeb do
+  scope Application.get_env(:block_scout_web, :web_network_path, "/"), BlockScoutWeb do
     pipe_through([:browser, BlockScoutWeb.Plug.AllowIframe])
 
     resources("/", ChainController, only: [:show], singleton: true, as: :chain)
