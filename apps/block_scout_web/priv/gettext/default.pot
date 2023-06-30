@@ -230,7 +230,7 @@ msgstr ""
 #, elixir-format
 #: lib/block_scout_web/templates/chain/_metatags.html.eex:4
 msgid "BlockScout provides analytics data, API, and Smart Contract tools for the %{subnetwork}"
-msgstr "Binance Smart Chain Explorer"
+msgstr "BNB Smart Chain Explorer"
 
 #, elixir-format
 #: lib/block_scout_web/templates/chain/show.html.eex:82
