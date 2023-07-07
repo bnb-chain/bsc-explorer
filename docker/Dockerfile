@@ -10,12 +10,12 @@ ENV PORT=4000 \
     ETHEREUM_JSONRPC_VARIANT="geth" \
     COIN="BNB" \
     EMISSION_FORMAT="GETH" \
-    NETWORK="Binance Smart Chain" \
+    NETWORK="BNB Smart Chain" \
     WEB_NETWORK_PATH="/smart-testnet" \
     STATIC_NETWORK_PATH="/smart-testnet" \
     API_PATH="/smart-testnet" \
     SOCKET_ROOT="/smart-testnet" \
-    BLOCKSCOUT_HOST="explorer.binance.org"
+    BLOCKSCOUT_HOST="explorer.bnbchain.org/"
 
 
 # Cache elixir deps

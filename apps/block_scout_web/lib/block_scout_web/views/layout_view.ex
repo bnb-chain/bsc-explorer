@@ -64,7 +64,7 @@ defmodule BlockScoutWeb.LayoutView do
   end
 
   def network_title do
-    Keyword.get(application_config(), :network) || "Binance Smart Chain"
+    Keyword.get(application_config(), :network) || "BNB Smart Chain"
   end
 
   defp application_config do
