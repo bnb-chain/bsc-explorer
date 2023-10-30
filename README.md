@@ -1,3 +1,5 @@
+This repo is out of maintenance and decommissioned.
+
 # Explorer for BNB Smart Chain
 This is a project fork from [Blockscout](https://github.com/poanetwork/blockscout). Use for [BNB Smart Chain Rialto Network](https://explorer.bnbchain.org/smart-testnet).
 
